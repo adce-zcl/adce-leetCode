@@ -1,4 +1,4 @@
-// 两个字符串的删除操作
+// 编辑距离
 #include <string>
 #include <vector>
 using namespace std;
@@ -22,13 +22,20 @@ public:
         {
             for (int j = 1; j <= size2; ++j)
             {
+                // 不需要操作
                 if (word1.at(i - 1) == word2.at(j - 1))
                 {
                     dp.at(i).at(j) = dp.at(i - 1).at(j - 1);
                 }
                 else
                 {
-                    dp.at(i).at(j) = min(dp.at(i - 1).at(j - 1) + 2, min(dp.at(i - 1).at(j) + 1, dp.at(i).at(j - 1) + 1));
+                    // 删除word1，或增加word2
+                    int n1 = dp.at(i - 1).at(j) + 1;
+                    // 删除word2，或增加word1
+                    int n2 = dp.at(i).at(j - 1) + 1;
+                    // 替换一个字符
+                    int n3 = dp.at(i - 1).at(j - 1) + 1;
+                    dp.at(i).at(j) = min(min(n1, n2), n3);
                 }
             }
         }
